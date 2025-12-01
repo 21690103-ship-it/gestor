@@ -1,0 +1,135 @@
+/* Fondo con imagen */
+.login-page {
+  height: 100vh;
+  background: url("/public/fondo.jpg") no-repeat center center/cover;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  height: 100vh;
+  background: url("/src/assets/logo.png") no-repeat center center/cover;
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+  height: 60px;
+  padding: 5px;
+}
+
+/* Header azul */
+.login-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to right, #002d72, #1e5bd7);
+  padding: 10px 30px;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-right {
+  text-align: right;
+}
+
+/* Caja de login */
+.login-container {
+  margin: left; /* centra vertical/horizontal */
+  margin-top: 110px;
+  margin-left: 50px;
+  width: 450px;
+  height: 350px;
+  padding: 25px;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  text-align: left;
+}
+
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.login-container label {
+  display: block;
+  margin: 10px 0 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+.login-container input {
+  width: 93%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+}
+
+.login-container button {
+  width: 100%;
+  margin-top: 15px;
+  padding: 12px;
+  background: #333;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.login-container button:hover {
+  background: #555;
+}
+
+.login-message {
+  margin-top: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.titulo {
+  text-align: center;
+  margin-top: 20px;
+  margin-left: 20px;
+  color: #ffffff;
+}
+
+.btn-olvido-contrasena {
+  background: none;
+  border: none;
+  color: #0066cc; /* Azul estándar para enlaces */
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+  font-family: inherit;
+  margin: 5px 0;
+  text-align: left;
+  width: auto;
+  display: inline-block;
+}
+
+.btn-olvido-contrasena:hover {
+  color: #0052a3; /* Azul más oscuro al pasar el mouse */
+  text-decoration: underline;
+}
+
+.btn-olvido-contrasena:disabled {
+  color: #999;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+/* Contenedor del enlace */
+.forgot-password-link {
+  text-align: center;
+  margin: 10px 0;
+}

@@ -1,0 +1,28 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up()
+    {
+        Schema::table('usuarios', function (Blueprint $table) {
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
+        });
+
+        DB::table('usuarios')->update([
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+    }
+
+    public function down()
+    {
+        Schema::table('usuarios', function (Blueprint $table) {
+            $table->dropColumn(['created_at', 'updated_at']);
+        });
+    }
+};

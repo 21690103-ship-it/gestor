@@ -1,0 +1,253 @@
+.modal-overlay-recuperacion {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content-recuperacion {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header-recuperacion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px; 
+  border-bottom: 2px solid #f0f0f0;
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  color: white;
+  border-radius: 12px 12px 0 0;
+}
+
+.modal-header-recuperacion h2 {
+  margin: 0;
+  font-size: 1.6rem; 
+}
+
+.modal-close-btn-recuperacion {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 28px; 
+  cursor: pointer;
+  padding: 0 12px;
+  border-radius: 50%;
+  transition: background 0.3s;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close-btn-recuperacion:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.modal-body-recuperacion {
+  padding: 30px; 
+}
+
+.mensaje-exito-recuperacion {
+  background: #d4edda;
+  color: #155724;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  border: 1px solid #c3e6cb;
+  font-size: 1rem;
+}
+
+.error-recuperacion {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  border: 1px solid #f5c6cb;
+  font-size: 1rem;
+}
+
+.form-group-recuperacion {
+  margin-bottom: 25px;
+}
+
+.form-group-recuperacion label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #333;
+  font-size: 1.05rem;
+}
+
+.form-group-recuperacion input {
+  width: 100%;
+  padding: 14px 16px; 
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1.1rem; 
+  transition: border 0.3s;
+  box-sizing: border-box;
+}
+
+.form-group-recuperacion input:focus {
+  border-color: #4a6cf7;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.15);
+}
+
+.form-group-recuperacion small {
+  display: block;
+  margin-top: 8px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.btn-continuar-recuperacion {
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  color: white;
+  border: none;
+  padding: 16px 40px; 
+  border-radius: 8px;
+  font-size: 1.1rem; 
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 15px;
+}
+
+.btn-continuar-recuperacion:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 20px rgba(106, 17, 203, 0.4);
+}
+
+.btn-continuar-recuperacion:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-volver-recuperacion {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 16px 35px; 
+  border-radius: 8px;
+  font-size: 1.1rem; 
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  flex: 1;
+  margin-right: 15px;
+}
+
+.btn-volver-recuperacion:hover:not(:disabled) {
+  background: #5a6268;
+  transform: translateY(-2px);
+}
+
+.botones-paso {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px; 
+  margin-top: 25px;
+}
+
+.botones-paso .btn-continuar-recuperacion {
+  flex: 2; 
+  margin: 0;
+}
+
+.botones-paso .btn-volver-recuperacion {
+  flex: 1;
+  margin-right: 0;
+}
+
+.info-recuperacion {
+  margin-top: 30px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border-left: 5px solid #4a6cf7;
+}
+
+.info-recuperacion p {
+  margin: 0 0 12px 0;
+  font-weight: 600;
+  color: #333;
+  font-size: 1.05rem;
+}
+
+.info-recuperacion ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #555;
+}
+
+.info-recuperacion li {
+  margin-bottom: 8px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.paso-solicitud p,
+.paso-codigo p,
+.paso-nueva-contrasena p {
+  margin-bottom: 25px;
+  color: #555;
+  line-height: 1.6;
+  font-size: 1.1rem;
+}
+
+/* Mejoras responsivas */
+@media (max-width: 768px) {
+  .modal-content-recuperacion {
+    width: 95%;
+    max-width: 95%;
+    margin: 10px;
+  }
+  
+  .modal-header-recuperacion {
+    padding: 15px 20px;
+  }
+  
+  .modal-body-recuperacion {
+    padding: 20px;
+  }
+  
+  .botones-paso {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .botones-paso .btn-volver-recuperacion,
+  .botones-paso .btn-continuar-recuperacion {
+    width: 100%;
+    margin: 0;
+  }
+}

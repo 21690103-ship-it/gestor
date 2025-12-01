@@ -1,0 +1,382 @@
+/* Overlay del modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+/* Modal más ancho */
+.compact-modal {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 700px;
+  max-height: 85vh;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: modalAppear 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Header del modal */
+.modal-header {
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: white;
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 12px 12px 0 0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.close-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Cuerpo del modal */
+.compact-body {
+  padding: 1.5rem;
+  max-height: 60vh;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Secciones compactas */
+.compact-section {
+  margin-bottom: 1.5rem;
+}
+
+.compact-section h3 {
+  color: #1e3c72;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+}
+
+/* Grid de archivos anteriores */
+.archivos-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.archivo-compact {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #1e3c72;
+  transition: all 0.3s ease;
+  gap: 1rem;
+}
+
+.archivo-compact.archivo-actual {
+  border-left: 4px solid #28a745;
+  background: #f0fff4;
+}
+
+.archivo-compact:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.archivo-icon {
+  background: #1e3c72;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.archivo-info-compact {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.3rem;
+}
+
+.archivo-nombre {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+
+.archivo-fecha, .archivo-estado {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.archivo-estado {
+  font-weight: bold;
+}
+
+.btn-visualizar {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.btn-visualizar:hover {
+  background: #2980b9;
+  transform: translateY(-1px);
+}
+
+/* Estados de carga y sin datos */
+.cargando-historial, .sin-historial {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-style: italic;
+  font-size: 1rem;
+}
+
+.file-input {
+  display: none;
+}
+
+/* Área de subida compacta */
+.upload-area-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.upload-btn-compact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
+  border: 2px dashed #1e3c72;
+  border-radius: 8px;
+  background: #f8f9ff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  color: #1e3c72;
+  font-weight: 600;
+}
+
+.upload-btn-compact:hover {
+  background: #e8f4ff;
+  border-color: #2a5298;
+}
+
+.file-selected-compact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 8px;
+  color: #155724;
+  gap: 1rem;
+}
+
+.file-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.file-name-compact {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.2rem;
+}
+
+.file-size-compact {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.btn-eliminar-compact {
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.btn-eliminar-compact:hover {
+  background: #c82333;
+}
+
+/* Requisitos del archivo */
+.file-requirements {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  border-left: 4px solid #007bff;
+}
+
+.file-requirements h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.file-requirements ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.file-requirements li {
+  font-size: 0.9rem;
+  margin: 0.3rem 0;
+  color: #555;
+}
+
+/* Footer compacto */
+.compact-footer {
+  padding: 1.2rem 1.5rem;
+  background: #f8f9fa;
+  border-radius: 0 0 12px 12px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.btn-cancelar, .btn-subir {
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  min-width: 120px;
+}
+
+.btn-cancelar {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-cancelar:hover {
+  background: #5a6268;
+}
+
+.btn-subir {
+  background: #1e3c72;
+  color: white;
+}
+
+.btn-subir:hover:not(:disabled) {
+  background: #2a5298;
+  transform: translateY(-2px);
+}
+
+.btn-subir:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Mensajes de error */
+.error-message {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 0.8rem;
+  border-radius: 6px;
+  margin: 0.5rem 0;
+  border: 1px solid #f5c6cb;
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .compact-modal {
+    margin: 10px;
+    max-width: none;
+  }
+  
+  .compact-body {
+    padding: 1rem;
+  }
+  
+  .archivo-compact {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+  
+  .btn-visualizar {
+    align-self: stretch;
+    text-align: center;
+  }
+  
+  .compact-footer {
+    flex-direction: column;
+  }
+  
+  .btn-cancelar, .btn-subir {
+    width: 100%;
+  }
+}

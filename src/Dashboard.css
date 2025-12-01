@@ -1,0 +1,300 @@
+.dashboard {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* Header */
+.dashboard-header {
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: white;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.logout-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0.5rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Contenedor principal */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Sección de Datos Personales */
+.personal-data {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.personal-data h2 {
+  color: #1e3c72;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #1e3c72;
+  padding-bottom: 0.5rem;
+}
+
+.data-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.data-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.data-item label {
+  font-weight: 600;
+  color: #333;
+  min-width: 150px;
+  margin-right: 1rem;
+}
+
+.data-item span {
+  color: #666;
+  font-size: 1rem;
+}
+
+/* Divisor */
+.divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #1e3c72, transparent);
+  margin: 2rem 0;
+}
+
+/* Sección de Documentos */
+.documents-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.documents-section h2 {
+  color: #1e3c72;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #1e3c72;
+  padding-bottom: 0.5rem;
+}
+
+/* Tarjetas de documentos */
+.document-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.document-card:hover {
+  border-color: #1e3c72;
+  box-shadow: 0 2px 8px rgba(30, 60, 114, 0.1);
+}
+
+.document-info h3 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.file-name {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* Botones de subida de archivos */
+.file-upload-btn {
+  background: #1e3c72;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+  text-align: center;
+  min-width: 150px;
+}
+
+.file-upload-btn:hover {
+  background: #2a5298;
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+  
+  .document-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .data-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .data-item label {
+    margin-bottom: 0.25rem;
+  }
+  
+  .header-content {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}
+
+.document-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-ver, .btn-eliminar, .file-upload-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.btn-ver {
+  background: #28a745;
+  color: white;
+}
+
+.btn-ver:hover {
+  background: #218838;
+  transform: translateY(-2px);
+}
+
+.btn-eliminar {
+  background: #dc3545;
+  color: white;
+}
+
+.btn-eliminar:hover {
+  background: #c82333;
+  transform: translateY(-2px);
+}
+
+.file-upload-btn {
+  background: #1e3c72;
+  color: white;
+}
+
+.file-upload-btn:hover {
+  background: #2a5298;
+  transform: translateY(-2px);
+}
+
+.document-details {
+  margin-top: 0.5rem;
+}
+
+.file-date {
+  color: #666;
+  font-size: 0.8rem;
+  margin: 0.25rem 0 0 0;
+}
+
+.no-file {
+  color: #999;
+  font-style: italic;
+  margin: 0.5rem 0 0 0;
+}
+
+/* Responsive para botones */
+@media (max-width: 768px) {
+  .document-actions {
+    flex-direction: column;
+  }
+  
+  .btn-ver, .btn-eliminar, .file-upload-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Estilos para la sección de datos personales */
+.personal-data-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn-editar-perfil {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-editar-perfil:hover {
+  background: #0056b3;
+}
+
+/* Responsive para botón de editar */
+@media (max-width: 768px) {
+  .personal-data-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .btn-editar-perfil {
+    align-self: flex-start;
+  }
+}

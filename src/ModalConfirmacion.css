@@ -1,0 +1,59 @@
+.confirmacion-modal {
+  max-width: 500px;
+  max-height: 80vh;
+}
+
+.confirmacion-modal .modal-body {
+  padding: 30px 20px;
+}
+
+.confirmacion-content {
+  text-align: center;
+}
+
+.confirmacion-mensaje {
+  margin-bottom: 10px;
+}
+
+.confirmacion-mensaje p {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  margin: 0;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.btn-cancelar {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-cancelar:hover {
+  background-color: #5a6268;
+}
+
+.btn-confirmar {
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.btn-confirmar:hover {
+  opacity: 0.9;
+}
