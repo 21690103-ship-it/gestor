@@ -34,7 +34,7 @@ const Dashboard = () => {
   const [documentoActual, setDocumentoActual] = useState(null);
   const [modalConfirmacionAbierto, setModalConfirmacionAbierto] = useState(false);
   const [modalEditarPerfilAbierto, setModalEditarPerfilAbierto] = useState(false);
-  const [actualizandoPerfil, setActualizandoPerfil] = useState(false);
+  const [setActualizandoPerfil] = useState(false);
   const documentosConfig = {
     actaNacimiento: { 
       tipo: 'actaNacimiento', 

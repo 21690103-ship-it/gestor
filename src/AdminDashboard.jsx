@@ -34,28 +34,103 @@ const AdminDashboard = () => {
   const [usuarioAEliminar, setUsuarioAEliminar] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const userData = JSON.parse(localStorage.getItem('user_data') || '{}');
-    
-    console.log('🔐 Verificando autenticación:', {
-      token: token ? 'PRESENTE' : 'AUSENTE',
-      userData: userData,
-      esAdmin: userData.id_cargo === 1
-    });
+    const verificarAutenticacionYCargarDatos = async () => {
+      const token = localStorage.getItem('token');
+      const userData = JSON.parse(localStorage.getItem('user_data') || '{}');
+      
+      console.log('🔐 Verificando autenticación:', {
+        token: token ? 'PRESENTE' : 'AUSENTE',
+        userData: userData,
+        esAdmin: userData.id_cargo === 1
+      });
 
-    if (!token) {
-      console.error('❌ No hay token, redirigiendo al login...');
-      navigate("/");
-      return;
-    }
+      if (!token) {
+        console.error('❌ No hay token, redirigiendo al login...');
+        navigate("/");
+        return;
+      }
 
-    if (userData.id_cargo !== 1) {
-      console.warn('⚠️ Usuario no es administrador, redirigiendo...');
-      navigate("/dashboard");
-      return;
-    }
+      if (userData.id_cargo !== 1) {
+        console.warn('⚠️ Usuario no es administrador, redirigiendo...');
+        navigate("/dashboard");
+        return;
+      }
 
-    cargarDatosIniciales();
+      // Cargar datos iniciales
+      try {
+        setLoading(true);
+        setError(null);
+        
+        console.log('📥 Cargando datos iniciales para admin...');
+
+        // Cargar usuarios
+        const responseUsuarios = await usuarioService.obtenerClientes();
+        console.log('👥 Respuesta de usuarios:', responseUsuarios.data);
+        
+        if (responseUsuarios.data.success) {
+          setUsuarios(responseUsuarios.data.usuarios || []);
+        } else {
+          console.error('❌ Error en respuesta de usuarios:', responseUsuarios.data);
+        }
+
+        // Cargar documentos pendientes
+        try {
+          console.log('📋 Solicitando documentos pendientes...');
+          
+          const response = await documentoService.obtenerPendientes();
+          console.log('✅ Respuesta de documentos pendientes:', {
+            success: response.data.success,
+            total: response.data.pendientes?.length,
+            datos: response.data
+          });
+          
+          if (response.data.success) {
+            setDocumentosPendientes(response.data.pendientes || []);
+            console.log(`📄 Documentos pendientes cargados: ${response.data.pendientes?.length || 0}`);
+          } else {
+            console.error('❌ Error en respuesta de pendientes:', response.data);
+            setDocumentosPendientes([]);
+          }
+        } catch (error) {
+          console.error('💥 Error cargando documentos pendientes:', {
+            message: error.message,
+            status: error.response?.status,
+            data: error.response?.data
+          });
+          
+          if (error.response?.status === 401) {
+            console.log('🔒 Sesión expirada en documentos pendientes...');
+            localStorage.removeItem('token');
+            localStorage.removeItem('user_data');
+            navigate("/");
+            return;
+          }
+          
+          setDocumentosPendientes([]);
+        }
+        
+      } catch (error) {
+        console.error('❌ Error cargando datos:', {
+          message: error.message,
+          status: error.response?.status,
+          data: error.response?.data
+        });
+        
+        if (error.response?.status === 401) {
+          console.log('🔒 Sesión expirada, limpiando datos...');
+          localStorage.removeItem('token');
+          localStorage.removeItem('user_data');
+          navigate("/");
+          return;
+        }
+        
+        setError('No se pudieron cargar los datos');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    verificarAutenticacionYCargarDatos();
   }, [navigate]);
 
   const getNombreCompleto = (usuario) => {
@@ -67,45 +142,6 @@ const AdminDashboard = () => {
     (usuario.RFC && usuario.RFC.toLowerCase().includes(busqueda.toLowerCase())) ||
     (usuario.correo && usuario.correo.toLowerCase().includes(busqueda.toLowerCase()))
   );
-
-  const cargarDatosIniciales = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      console.log('📥 Cargando datos iniciales para admin...');
-
-      const responseUsuarios = await usuarioService.obtenerClientes();
-      console.log('👥 Respuesta de usuarios:', responseUsuarios.data);
-      
-      if (responseUsuarios.data.success) {
-        setUsuarios(responseUsuarios.data.usuarios || []);
-      } else {
-        console.error('❌ Error en respuesta de usuarios:', responseUsuarios.data);
-      }
-
-      await cargarDocumentosPendientes();
-      
-    } catch (error) {
-      console.error('❌ Error cargando datos:', {
-        message: error.message,
-        status: error.response?.status,
-        data: error.response?.data
-      });
-      
-      if (error.response?.status === 401) {
-        console.log('🔒 Sesión expirada, limpiando datos...');
-        localStorage.removeItem('token');
-        localStorage.removeItem('user_data');
-        navigate("/");
-        return;
-      }
-      
-      setError('No se pudieron cargar los datos');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const cargarDocumentosPendientes = async () => {
     try {
@@ -145,54 +181,64 @@ const AdminDashboard = () => {
   };
 
   const handleAgregarUsuario = async (nuevoUsuario) => {
-  try {
-    console.log('👤 Intentando agregar nuevo usuario:', nuevoUsuario);
-    
-    const resultado = await usuarioService.crearUsuario(nuevoUsuario);
-    
-    console.log('✅ Respuesta del backend:', resultado);
-    
-    if (resultado.success) {
-      alert('✅ Usuario agregado correctamente');
-      setModalAgregarUsuarioAbierto(false);
-      cargarDatosIniciales();
-    } else {
-      alert(`❌ Error: ${resultado.message}`);
-    }
-  } catch (error) {
-    console.error('💥 Error agregando usuario:', {
-      message: error.message,
-      errorCompleto: error
-    });
-    alert(`❌ Error al agregar el usuario: ${error.message}`);
-  }
-};
-
-const handleEliminarUsuario = async (usuario) => {
-  try {
-    console.log('🗑️ Eliminando usuario y todos sus documentos:', usuario.id);
-    
-    const resultado = await usuarioService.eliminarUsuario(usuario.id);
-    
-    console.log('✅ Respuesta eliminar usuario completo:', resultado);
-    
-    if (resultado.success) {
-      let mensaje = resultado.message;
+    try {
+      console.log('👤 Intentando agregar nuevo usuario:', nuevoUsuario);
       
-      alert(mensaje);
-      setModalConfirmacionAbierto(false);
-      setUsuarioAEliminar(null);
-      cargarDatosIniciales();
-    } else {
-      alert(`❌ Error: ${resultado.message}`);
+      const resultado = await usuarioService.crearUsuario(nuevoUsuario);
+      
+      console.log('✅ Respuesta del backend:', resultado);
+      
+      if (resultado.success) {
+        alert('✅ Usuario agregado correctamente');
+        setModalAgregarUsuarioAbierto(false);
+        
+        // Recargar usuarios después de agregar uno nuevo
+        const responseUsuarios = await usuarioService.obtenerClientes();
+        if (responseUsuarios.data.success) {
+          setUsuarios(responseUsuarios.data.usuarios || []);
+        }
+      } else {
+        alert(`❌ Error: ${resultado.message}`);
+      }
+    } catch (error) {
+      console.error('💥 Error agregando usuario:', {
+        message: error.message,
+        errorCompleto: error
+      });
+      alert(`❌ Error al agregar el usuario: ${error.message}`);
     }
-  } catch (error) {
-    console.error('💥 Error eliminando usuario:', error);
-    alert(`❌ Error al eliminar el usuario: ${error.message}`);
-  }
-};
+  };
 
-const solicitarEliminarUsuario = (usuario) => {
+  const handleEliminarUsuario = async (usuario) => {
+    try {
+      console.log('🗑️ Eliminando usuario y todos sus documentos:', usuario.id);
+      
+      const resultado = await usuarioService.eliminarUsuario(usuario.id);
+      
+      console.log('✅ Respuesta eliminar usuario completo:', resultado);
+      
+      if (resultado.success) {
+        let mensaje = resultado.message;
+        
+        alert(mensaje);
+        setModalConfirmacionAbierto(false);
+        setUsuarioAEliminar(null);
+        
+        // Recargar usuarios después de eliminar
+        const responseUsuarios = await usuarioService.obtenerClientes();
+        if (responseUsuarios.data.success) {
+          setUsuarios(responseUsuarios.data.usuarios || []);
+        }
+      } else {
+        alert(`❌ Error: ${resultado.message}`);
+      }
+    } catch (error) {
+      console.error('💥 Error eliminando usuario:', error);
+      alert(`❌ Error al eliminar el usuario: ${error.message}`);
+    }
+  };
+
+  const solicitarEliminarUsuario = (usuario) => {
     setUsuarioAEliminar(usuario);
     setModalConfirmacionAbierto(true);
   };
@@ -265,43 +311,43 @@ const solicitarEliminarUsuario = (usuario) => {
     }
   };
 
-const descargarDocumentoUsuario = async (documentoId, nombreArchivo) => {
-  try {
-    console.log('📥 Descargando documento usuario ID:', documentoId);
-    
-    const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:8000/api/admin/documentos/descargar/${documentoId}`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
+  const descargarDocumentoUsuario = async (documentoId, nombreArchivo) => {
+    try {
+      console.log('📥 Descargando documento usuario ID:', documentoId);
+      
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:8000/api/admin/documentos/descargar/${documentoId}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Error en la descarga');
       }
-    });
 
-    if (!response.ok) {
-      throw new Error('Error en la descarga');
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      
+      const rfcUsuario = usuarioSeleccionado?.RFC ? usuarioSeleccionado.RFC.trim() : 'sin-rfc';
+      const nombreDescarga = `${rfcUsuario} - ${nombreArchivo}`;
+      
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = nombreDescarga;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      console.log('✅ Documento descargado con nombre:', nombreDescarga);
+      
+    } catch (error) {
+      console.error('❌ Error descargando documento:', error);
+      alert('Error al descargar el documento: ' + error.message);
     }
-
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-    
-    const rfcUsuario = usuarioSeleccionado?.RFC ? usuarioSeleccionado.RFC.trim() : 'sin-rfc';
-    const nombreDescarga = `${rfcUsuario} - ${nombreArchivo}`;
-    
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = nombreDescarga;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
-    
-    console.log('✅ Documento descargado con nombre:', nombreDescarga);
-    
-  } catch (error) {
-    console.error('❌ Error descargando documento:', error);
-    alert('Error al descargar el documento: ' + error.message);
-  }
-};
+  };
 
   const visualizarDocumentoUsuario = async (documentoId) => {
     try {
@@ -329,15 +375,15 @@ const descargarDocumentoUsuario = async (documentoId, nombreArchivo) => {
     }
   };
 
-const handleLogout = () => {
-  localStorage.removeItem('user_data');
-  localStorage.removeItem('token');
-  navigate("/");
-};
+  const handleLogout = () => {
+    localStorage.removeItem('user_data');
+    localStorage.removeItem('token');
+    navigate("/");
+  };
 
-const solicitarLogout = () => {
-  setModalLogoutAbierto(true);
-};
+  const solicitarLogout = () => {
+    setModalLogoutAbierto(true);
+  };
 
   const handleVerArchivos = (usuario) => {
     cargarDocumentosUsuario(usuario);
@@ -444,8 +490,8 @@ const solicitarLogout = () => {
           <div className="user-info">
             <span>Panel de Administración - {userData.nombre}</span>
             <button className="logout-btn" onClick={solicitarLogout}>
-  Cerrar Sesión
-</button>
+              Cerrar Sesión
+            </button>
           </div>
         </div>
       </header>
@@ -591,7 +637,19 @@ const solicitarLogout = () => {
                     </button>
                     <button 
                       className="btn-refresh"
-                      onClick={cargarDatosIniciales}
+                      onClick={async () => {
+                        setLoading(true);
+                        try {
+                          const responseUsuarios = await usuarioService.obtenerClientes();
+                          if (responseUsuarios.data.success) {
+                            setUsuarios(responseUsuarios.data.usuarios || []);
+                          }
+                        } catch (error) {
+                          console.error('Error actualizando usuarios:', error);
+                        } finally {
+                          setLoading(false);
+                        }
+                      }}
                       disabled={loading}
                     >
                       {loading ? '🔄 Cargando...' : '🔄 Actualizar'}
@@ -737,14 +795,14 @@ const solicitarLogout = () => {
       />
 
       <ModalConfirmacion
-      isOpen={modalLogoutAbierto}
-      onClose={() => setModalLogoutAbierto(false)}
-      onConfirm={handleLogout}
-      titulo="Confirmar Cierre de Sesión"
-      mensaje="¿Estás seguro de que deseas cerrar sesión?"
-      textoConfirmar="Sí, Cerrar Sesión"
-      textoCancelar="Cancelar"
-      tipo="advertencia"
+        isOpen={modalLogoutAbierto}
+        onClose={() => setModalLogoutAbierto(false)}
+        onConfirm={handleLogout}
+        titulo="Confirmar Cierre de Sesión"
+        mensaje="¿Estás seguro de que deseas cerrar sesión?"
+        textoConfirmar="Sí, Cerrar Sesión"
+        textoCancelar="Cancelar"
+        tipo="advertencia"
       />
     </div>
   );
