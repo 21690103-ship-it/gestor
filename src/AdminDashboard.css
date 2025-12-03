@@ -1273,3 +1273,18 @@
   border: 2px dashed #dee2e6;
   margin-top: 1rem;
 }
+
+/* SOLUCIÓN DIRECTA - Títulos de modales en blanco */
+.modal-header h2 {
+  color: white !important;
+}
+
+/* Para el modal de revisión también */
+.modal-header-revision h2 {
+  color: white !important;
+}
+
+/* Para el modal de confirmación específicamente */
+.confirmacion-modal .modal-header h2 {
+  color: white !important;
+}

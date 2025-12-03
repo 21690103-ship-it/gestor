@@ -188,3 +188,47 @@
     margin-bottom: 0.5rem;
   }
 }
+
+/* ===== RESPONSIVE - MEJORADO ===== */
+@media (max-width: 768px) {
+  .confirmacion-overlay {
+    padding: 10px;
+  }
+  
+  .confirmacion-content {
+    margin: 0;
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .confirmacion-header {
+    padding: 1rem;
+  }
+  
+  .confirmacion-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .confirmacion-body {
+    padding: 1rem;
+  }
+  
+  .confirmacion-footer {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .btn-cancelar,
+  .btn-continuar,
+  .btn-confirmar {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+  
+  /* Para modales de peligro, botón rojo primero */
+  .btn-confirmar {
+    order: -1;
+  }
+}

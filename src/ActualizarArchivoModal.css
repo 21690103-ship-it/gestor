@@ -380,3 +380,135 @@
     width: 100%;
   }
 }
+
+/* ===== RESPONSIVE - MEJORADO ===== */
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+  
+  .compact-modal {
+    margin: 0;
+    max-width: 100%;
+    width: 100%;
+    max-height: 90vh;
+    border-radius: 12px 12px 0 0;
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  .modal-header {
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .compact-body {
+    padding: 1rem;
+    max-height: 60vh;
+  }
+  
+  .compact-section {
+    margin-bottom: 1rem;
+  }
+  
+  .archivo-compact {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.75rem;
+  }
+  
+  .archivo-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+  
+  .archivo-nombre {
+    font-size: 0.9rem;
+  }
+  
+  .archivo-fecha,
+  .archivo-estado {
+    font-size: 0.8rem;
+  }
+  
+  .btn-visualizar {
+    width: 100%;
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+  
+  .upload-area-compact {
+    gap: 0.75rem;
+  }
+  
+  .upload-btn-compact {
+    padding: 1rem;
+    font-size: 0.95rem;
+  }
+  
+  .file-selected-compact {
+    padding: 0.75rem;
+  }
+  
+  .file-requirements {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+  
+  .compact-footer {
+    padding: 1rem;
+    position: sticky;
+    bottom: 0;
+    background: white;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .btn-cancelar,
+  .btn-subir {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+  
+  /* Botón cerrar más grande */
+  .close-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 1.8rem;
+  }
+}
+
+/* Pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .compact-modal {
+    max-height: 95vh;
+  }
+  
+  .archivo-compact {
+    padding: 0.5rem;
+  }
+}
+
+/* Orientación landscape */
+@media (max-height: 500px) and (orientation: landscape) {
+  .compact-modal {
+    max-height: 95vh;
+    border-radius: 12px;
+  }
+  
+  .modal-overlay {
+    align-items: center;
+  }
+  
+  .compact-body {
+    max-height: 65vh;
+  }
+}

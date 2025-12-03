@@ -54,21 +54,21 @@ const ModalConfirmacion = ({
           </div>
         </div>
 
-        <div className="modal-footer">
-          <button 
-            className="btn-cancelar" 
-            onClick={onClose}
-          >
-            {textoCancelar}
-          </button>
-          <button 
-            className="btn-confirmar" 
-            onClick={onConfirm}
-            style={{ backgroundColor: getColorBoton() }}
-          >
-            {textoConfirmar}
-          </button>
-        </div>
+<div className={`modal-footer ${tipo === 'peligro' ? 'peligro' : ''}`}>
+  <button 
+    className="btn-cancelar" 
+    onClick={onClose}
+  >
+    {textoCancelar}
+  </button>
+  <button 
+    className="btn-confirmar" 
+    onClick={onConfirm}
+    style={{ backgroundColor: getColorBoton() }}
+  >
+    {textoConfirmar}
+  </button>
+</div>
       </div>
     </div>
   );
