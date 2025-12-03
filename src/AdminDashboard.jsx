@@ -33,6 +33,17 @@ const AdminDashboard = () => {
   const [modalConfirmacionAbierto, setModalConfirmacionAbierto] = useState(false);
   const [usuarioAEliminar, setUsuarioAEliminar] = useState(null);
 
+  const [, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   useEffect(() => {
     const verificarAutenticacionYCargarDatos = async () => {
       const token = localStorage.getItem('token');
@@ -471,6 +482,128 @@ const AdminDashboard = () => {
     return estados[estado] || estado;
   };
 
+  const getGeneroTexto = (genero) => {
+    const generos = {
+      'masculino': '♂ Masculino',
+      'femenino': '♀ Femenino'
+    };
+    return generos[genero] || 'No especificado';
+  };
+
+  // Renderizar vista móvil para usuarios
+  const renderUsuariosMobile = () => (
+    <div className="usuarios-cards-mobile">
+      {usuariosFiltrados.map((usuario) => (
+        <div key={usuario.id} className="usuario-card-mobile">
+          <div className="usuario-info-mobile">
+            <h4>{getNombreCompleto(usuario)}</h4>
+            <p><strong>RFC:</strong> {usuario.RFC || 'N/A'}</p>
+            <p><strong>Correo:</strong> {usuario.correo || 'N/A'}</p>
+            <p><strong>Género:</strong> {getGeneroTexto(usuario.genero)}</p>
+          </div>
+          <div className="acciones-mobile">
+            <button 
+              className="btn-ver-archivos"
+              onClick={() => handleVerArchivos(usuario)}
+              disabled={cargandoDocumentos}
+            >
+              {cargandoDocumentos ? '📁 Cargando...' : '📁 Documentos'}
+            </button>
+            <button 
+              className="btn-eliminar-usuario"
+              onClick={() => solicitarEliminarUsuario(usuario)}
+            >
+              🗑️ Eliminar
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  // Renderizar vista desktop para usuarios
+  const renderUsuariosDesktop = () => (
+    <div className="table-container">
+      <table className="usuarios-table">
+        <thead>
+          <tr>
+            <th>Nombre Completo</th>
+            <th>RFC</th>
+            <th>Correo Electrónico</th>
+            <th>Género</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {usuariosFiltrados.map((usuario) => (
+            <tr key={usuario.id} className="usuario-row">
+              <td className="nombre-completo">
+                <strong>{getNombreCompleto(usuario)}</strong>
+              </td>
+              <td className="rfc">{usuario.RFC || 'N/A'}</td>
+              <td className="correo">{usuario.correo || 'N/A'}</td>
+              <td className="genero">
+                <span className={`badge genero-${usuario.genero}`}>
+                  {getGeneroTexto(usuario.genero)}
+                </span>
+              </td>
+              <td className="acciones">
+                <div className="action-buttons-row">
+                  <button 
+                    className="btn-ver-archivos"
+                    onClick={() => handleVerArchivos(usuario)}
+                    title="Ver documentos del usuario"
+                    disabled={cargandoDocumentos}
+                  >
+                    {cargandoDocumentos ? '📁 Cargando...' : '📁 Documentos'}
+                  </button>
+                  <button 
+                    className="btn-eliminar-usuario"
+                    onClick={() => solicitarEliminarUsuario(usuario)}
+                    title="Eliminar usuario"
+                  >
+                    🗑️ Eliminar
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
+  // Estado sin datos
+  const renderSinDatos = () => (
+    <div className="no-data-message">
+      {busqueda ? (
+        <>
+          <div className="no-data-icon">🔍</div>
+          <h3>No se encontraron usuarios</h3>
+          <p>No hay resultados para "<strong>{busqueda}</strong>"</p>
+          <button 
+            className="btn-limpiar-busqueda"
+            onClick={() => setBusqueda("")}
+          >
+            Mostrar todos los usuarios
+          </button>
+        </>
+      ) : (
+        <>
+          <div className="no-data-icon">👥</div>
+          <h3>No hay usuarios registrados</h3>
+          <p>No se encontraron usuarios cliente en el sistema</p>
+          <button 
+            className="btn-agregar-primero"
+            onClick={() => setModalAgregarUsuarioAbierto(true)}
+          >
+            ➕ Agregar el primer usuario
+          </button>
+        </>
+      )}
+    </div>
+  );
+
   if (loading && documentosPendientes.length === 0 && usuarios.length === 0) {
     return (
       <div className="admin-dashboard">
@@ -604,6 +737,12 @@ const AdminDashboard = () => {
                     onChange={(e) => setBusqueda(e.target.value)}
                     className="search-input"
                   />
+                  <button 
+                    className="search-btn"
+                    onClick={() => {}} // La búsqueda es en tiempo real
+                  >
+                    🔍 Buscar
+                  </button>
                 </div>
                 
                 {busqueda && (
@@ -669,88 +808,18 @@ const AdminDashboard = () => {
                   <div className="loading-spinner"></div>
                   <p>Cargando usuarios...</p>
                 </div>
-              ) : (
-                <div className="table-container">
-                  <table className="usuarios-table">
-                    <thead>
-                      <tr>
-                        <th>Nombre Completo</th>
-                        <th>RFC</th>
-                        <th>Correo Electrónico</th>
-                        <th>Género</th>
-                        <th>Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {usuariosFiltrados.length > 0 ? (
-                        usuariosFiltrados.map((usuario) => (
-                          <tr key={usuario.id} className="usuario-row">
-                            <td className="nombre-completo">
-                              <strong>{getNombreCompleto(usuario)}</strong>
-                            </td>
-                            <td className="rfc">{usuario.RFC || 'N/A'}</td>
-                            <td className="correo">{usuario.correo || 'N/A'}</td>
-                            <td className="genero">
-                              <span className={`badge genero-${usuario.genero}`}>
-                                {usuario.genero === 'masculino' ? '♂ Masculino' : 
-                                 usuario.genero === 'femenino' ? '♀ Femenino' : 'No especificado'}
-                              </span>
-                            </td>
-                            <td className="acciones">
-                              <div className="action-buttons-row">
-                                <button 
-                                  className="btn-ver-archivos"
-                                  onClick={() => handleVerArchivos(usuario)}
-                                  title="Ver documentos del usuario"
-                                  disabled={cargandoDocumentos}
-                                >
-                                  {cargandoDocumentos ? '📁 Cargando...' : '📁 Documentos'}
-                                </button>
-                                <button 
-                                  className="btn-eliminar-usuario"
-                                  onClick={() => solicitarEliminarUsuario(usuario)}
-                                  title="Eliminar usuario"
-                                >
-                                  🗑️ Eliminar
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))
-                      ) : (
-                        <tr className="no-data-row">
-                          <td colSpan="5" className="no-data-message">
-                            {busqueda ? (
-                              <>
-                                <div className="no-data-icon">🔍</div>
-                                <h3>No se encontraron usuarios</h3>
-                                <p>No hay resultados para "<strong>{busqueda}</strong>"</p>
-                                <button 
-                                  className="btn-limpiar-busqueda"
-                                  onClick={() => setBusqueda("")}
-                                >
-                                  Mostrar todos los usuarios
-                                </button>
-                              </>
-                            ) : (
-                              <>
-                                <div className="no-data-icon">👥</div>
-                                <h3>No hay usuarios registrados</h3>
-                                <p>No se encontraron usuarios cliente en el sistema</p>
-                                <button 
-                                  className="btn-agregar-primero"
-                                  onClick={() => setModalAgregarUsuarioAbierto(true)}
-                                >
-                                  ➕ Agregar el primer usuario
-                                </button>
-                              </>
-                            )}
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
+              ) : usuariosFiltrados.length === 0 ? (
+                <div className="no-data-message-container">
+                  {renderSinDatos()}
                 </div>
+              ) : (
+                <>
+                  {/* Versión Desktop - Tabla */}
+                  {renderUsuariosDesktop()}
+                  
+                  {/* Versión Mobile - Cards */}
+                  {renderUsuariosMobile()}
+                </>
               )}
             </section>
           </>

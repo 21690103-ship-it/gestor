@@ -298,3 +298,168 @@
     align-self: flex-start;
   }
 }
+
+/* ===== RESPONSIVE DESIGN - MEJORADO ===== */
+
+/* Pantallas medianas (tablets) */
+@media (max-width: 1024px) {
+  .dashboard-container {
+    padding: 1.5rem;
+  }
+  
+  .data-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Pantallas pequeñas (tablets pequeñas) */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+  
+  /* Header */
+  .header-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  /* Sección de datos personales */
+  .personal-data,
+  .documents-section {
+    padding: 1.5rem;
+  }
+  
+  .data-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .data-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.75rem 0;
+  }
+  
+  .data-item label {
+    min-width: auto;
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+  }
+  
+  .data-item span {
+    font-size: 0.95rem;
+  }
+  
+  /* Botón editar perfil */
+  .personal-data-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .btn-editar-perfil {
+    align-self: stretch;
+    text-align: center;
+  }
+  
+  /* Tarjetas de documentos */
+  .document-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+  
+  .document-info h3 {
+    font-size: 1rem;
+  }
+  
+  .document-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+  
+  .btn-ver,
+  .btn-eliminar,
+  .file-upload-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Pantallas extra pequeñas (móviles) */
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 0.75rem;
+  }
+  
+  .dashboard-header {
+    padding: 0.75rem 1rem;
+  }
+  
+  .personal-data h2,
+  .documents-section h2 {
+    font-size: 1.3rem;
+  }
+  
+  .personal-data,
+  .documents-section {
+    padding: 1.25rem;
+  }
+  
+  /* Document cards */
+  .document-card {
+    padding: 1rem;
+  }
+  
+  .file-name {
+    font-size: 0.85rem;
+  }
+  
+  .file-date {
+    font-size: 0.75rem;
+  }
+  
+  /* Botones más pequeños */
+  .logout-btn,
+  .btn-editar-perfil,
+  .btn-ver,
+  .btn-eliminar,
+  .file-upload-btn {
+    padding: 0.625rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Orientación landscape en móviles */
+@media (max-height: 500px) and (orientation: landscape) {
+  .dashboard-container {
+    padding: 0.5rem;
+  }
+  
+  .personal-data,
+  .documents-section {
+    padding: 1rem;
+  }
+}
+
+/* Pantallas muy pequeñas */
+@media (max-width: 360px) {
+  .dashboard-header h1 {
+    font-size: 1.3rem;
+  }
+  
+  .personal-data h2,
+  .documents-section h2 {
+    font-size: 1.2rem;
+  }
+  
+  .document-info h3 {
+    font-size: 0.95rem;
+  }
+}
