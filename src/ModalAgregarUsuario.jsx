@@ -159,7 +159,7 @@ const ModalAgregarUsuario = ({ isOpen, onClose, onAgregarUsuario }) => {
                 </div>
 
                 <div className="form-group">
-                  <label>Apellido Materno</label>
+                  <label>Apellido Materno *</label>
                   <input
                     type="text"
                     name="ape_mat"
@@ -237,7 +237,7 @@ const ModalAgregarUsuario = ({ isOpen, onClose, onAgregarUsuario }) => {
               <div className="form-info">
                 <p>Información importante:</p>
                 <ul>
-                  <li>Los campos marcados con * son obligatorios</li>
+                  <li>Todos los campos son obligatorios</li>
                   <li>La contraseña debe tener al menos 6 caracteres</li>
                 </ul>
               </div>
