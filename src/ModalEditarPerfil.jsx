@@ -35,22 +35,45 @@ const ModalEditarPerfil = ({ isOpen, onClose, usuario, onActualizarPerfil }) => 
   };
 
   const validarFormulario = () => {
+    // Validar nombre
     if (!formData.nombre.trim()) {
       setError("El nombre es obligatorio");
       return false;
     }
+    
+    // Validar apellido paterno
     if (!formData.ape_pat.trim()) {
       setError("El apellido paterno es obligatorio");
       return false;
     }
+    
+    // Validar RFC
     if (!formData.RFC.trim()) {
       setError("El RFC es obligatorio");
       return false;
     }
+    
+    // Validar formato de RFC (opcional, pero recomendado)
+    const rfcRegex = /^[A-Z&Ñ]{3,4}[0-9]{6}[A-Z0-9]{3}$/;
+    if (formData.RFC.trim() && !rfcRegex.test(formData.RFC.trim())) {
+      setError("El formato del RFC no es válido");
+      return false;
+    }
+    
+    // Validar correo electrónico
     if (!formData.correo.trim()) {
       setError("El correo electrónico es obligatorio");
       return false;
     }
+    
+    // Validar formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.correo)) {
+      setError("Ingrese un correo electrónico válido");
+      return false;
+    }
+    
+    // El apellido materno puede quedar vacío, así que no lo validamos
     
     // Validar contraseña solo si se ingresó una nueva
     if (formData.contraseña || formData.confirmarContraseña) {
@@ -67,38 +90,44 @@ const ModalEditarPerfil = ({ isOpen, onClose, usuario, onActualizarPerfil }) => 
     return true;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!validarFormulario()) return;
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  if (!validarFormulario()) return;
 
-    setCargando(true);
-    try {
-      // Preparar datos para enviar (sin contraseña si no se cambió)
-      const datosActualizados = {
-        nombre: formData.nombre.trim(),
-        ape_pat: formData.ape_pat.trim(),
-        ape_mat: formData.ape_mat.trim(),
-        RFC: formData.RFC.trim(),
-        correo: formData.correo.trim()
-      };
-      
-      // Solo incluir contraseña si se cambió
-      if (formData.contraseña) {
-        datosActualizados.contraseña = formData.contraseña;
-      }
-      
-      await onActualizarPerfil(datosActualizados);
-      
-      onClose();
-      
-    } catch (error) {
-      console.error('❌ Error actualizando perfil:', error);
-      setError(error.message || "Error al actualizar el perfil");
-    } finally {
-      setCargando(false);
+  setCargando(true);
+  try {
+    // Preparar datos para enviar
+    const datosActualizados = {
+      nombre: formData.nombre.trim(),
+      ape_pat: formData.ape_pat.trim(),
+      RFC: formData.RFC.trim(),
+      correo: formData.correo.trim()
+    };
+    
+    // ✅ ENVIAR null en lugar de string vacío
+    if (formData.ape_mat && formData.ape_mat.trim()) {
+      datosActualizados.ape_mat = formData.ape_mat.trim();
+    } else {
+      datosActualizados.ape_mat = null; // Enviar null en lugar de string vacío
     }
-  };
+    
+    // Solo incluir contraseña si se cambió
+    if (formData.contraseña) {
+      datosActualizados.contraseña = formData.contraseña;
+    }
+    
+    await onActualizarPerfil(datosActualizados);
+    
+    onClose();
+    
+  } catch (error) {
+    console.error('❌ Error actualizando perfil:', error);
+    setError(error.message || "Error al actualizar el perfil");
+  } finally {
+    setCargando(false);
+  }
+};
 
   const handleCerrar = () => {
     setFormData({
@@ -157,13 +186,13 @@ const ModalEditarPerfil = ({ isOpen, onClose, usuario, onActualizarPerfil }) => 
             </div>
 
             <div className="form-group-perfil">
-              <label>Apellido Materno</label>
+              <label>Apellido Materno</label> {/* Quitado el asterisco */}
               <input
                 type="text"
                 name="ape_mat"
                 value={formData.ape_mat}
                 onChange={handleChange}
-                placeholder="Ingrese su apellido materno"
+                placeholder="Ingrese su apellido materno (opcional)"
               />
             </div>
 
@@ -174,7 +203,7 @@ const ModalEditarPerfil = ({ isOpen, onClose, usuario, onActualizarPerfil }) => 
                 name="RFC"
                 value={formData.RFC}
                 onChange={handleChange}
-                placeholder="Ingrese su RFC"
+                placeholder="Ingrese su RFC (13 caracteres)"
                 required
                 maxLength="13"
                 className="input-rfc"
@@ -188,7 +217,7 @@ const ModalEditarPerfil = ({ isOpen, onClose, usuario, onActualizarPerfil }) => 
                 name="correo"
                 value={formData.correo}
                 onChange={handleChange}
-                placeholder="Ingrese su correo electrónico"
+                placeholder="ejemplo@correo.com"
                 required
               />
             </div>
@@ -234,6 +263,7 @@ const ModalEditarPerfil = ({ isOpen, onClose, usuario, onActualizarPerfil }) => 
             <p><strong>Nota:</strong></p>
             <ul>
               <li>Los campos marcados con * son obligatorios</li>
+              <li>El apellido materno es opcional</li>
               <li>El RFC se guardará automáticamente en MAYÚSCULAS</li>
               <li>Dejar los campos de contraseña en blanco para no cambiarla</li>
               <li>Los cambios pueden tardar unos minutos en reflejarse</li>

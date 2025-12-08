@@ -144,9 +144,13 @@ const AdminDashboard = () => {
     verificarAutenticacionYCargarDatos();
   }, [navigate]);
 
-  const getNombreCompleto = (usuario) => {
-    return `${usuario.nombre} ${usuario.ape_pat} ${usuario.ape_mat}`.trim();
-  };
+const getNombreCompleto = (usuario) => {
+  const nombre = usuario.nombre || '';
+  const apePat = usuario.ape_pat || '';
+  const apeMat = usuario.ape_mat ? ` ${usuario.ape_mat}` : '';
+  
+  return `${nombre} ${apePat}${apeMat}`.trim();
+};
 
   const usuariosFiltrados = usuarios.filter(usuario =>
     getNombreCompleto(usuario).toLowerCase().includes(busqueda.toLowerCase()) ||

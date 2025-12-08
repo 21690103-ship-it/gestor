@@ -544,7 +544,14 @@ public function actualizarPerfil(Request $request, $id)
             'usuario_autenticado' => auth()->id()
         ]);
         
-        $usuario = Usuarios::findOrFail($id);
+        $usuario = Usuarios::find($id);
+        
+        if (!$usuario) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Usuario no encontrado'
+            ], 404);
+        }
         
         // Verificar que el usuario solo pueda actualizar su propio perfil
         $usuarioAutenticado = auth()->user();
@@ -555,7 +562,7 @@ public function actualizarPerfil(Request $request, $id)
             ], 403);
         }
         
-        // Validar datos
+        // ✅ VALIDACIÓN - ape_mat puede ser null
         $validated = $request->validate([
             'nombre' => 'required|string|max:100',
             'ape_pat' => 'required|string|max:100',
@@ -567,11 +574,17 @@ public function actualizarPerfil(Request $request, $id)
         
         \Log::info('✅ Validación pasada, actualizando datos...');
         
+        // ✅ MANEJO MEJORADO DE ape_mat
+        // Si viene como null o string vacío, establecer como null
+        $apeMat = isset($validated['ape_mat']) && trim($validated['ape_mat']) !== '' 
+            ? $validated['ape_mat'] 
+            : null;
+        
         // Actualizar datos básicos
         $datosActualizar = [
             'nombre' => $validated['nombre'],
             'ape_pat' => $validated['ape_pat'],
-            'ape_mat' => $validated['ape_mat'] ?? $usuario->ape_mat,
+            'ape_mat' => $apeMat, // ✅ Puede ser null
             'RFC' => strtoupper($validated['RFC']),
             'correo' => $validated['correo']
         ];
@@ -586,7 +599,8 @@ public function actualizarPerfil(Request $request, $id)
         
         \Log::info('✅ Usuario actualizado exitosamente', [
             'usuario_id' => $id,
-            'campos_actualizados' => array_keys($datosActualizar)
+            'campos_actualizados' => array_keys($datosActualizar),
+            'ape_mat_final' => $usuario->ape_mat
         ]);
         
         return response()->json([

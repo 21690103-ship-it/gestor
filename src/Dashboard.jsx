@@ -34,7 +34,7 @@ const Dashboard = () => {
   const [documentoActual, setDocumentoActual] = useState(null);
   const [modalConfirmacionAbierto, setModalConfirmacionAbierto] = useState(false);
   const [modalEditarPerfilAbierto, setModalEditarPerfilAbierto] = useState(false);
-  const [setActualizandoPerfil] = useState(false);
+  const [actualizandoPerfil, setActualizandoPerfil] = useState(false);
   const documentosConfig = {
     actaNacimiento: { 
       tipo: 'actaNacimiento', 
@@ -198,7 +198,7 @@ const Dashboard = () => {
           ...userData,
           nombre: datosActualizados.nombre,
           ape_pat: datosActualizados.ape_pat,
-          ape_mat: datosActualizados.ape_mat || userData.ape_mat,
+          ape_mat: datosActualizados.ape_mat,
           RFC: datosActualizados.RFC,
           correo: datosActualizados.correo
         };
